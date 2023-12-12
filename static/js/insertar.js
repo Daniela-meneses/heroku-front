@@ -16,7 +16,7 @@ function checkTokenAndRedirect() {
     const request = new XMLHttpRequest();
 
     // Hacer una solicitud GET al endpoint del backend (puedes ajustar el endpoint según tus necesidades)
-    request.open('GET', 'https://contactos-backend-2x51.onrender.com/check_token');
+    request.open('GET', 'https://token-back-d1881038bacf.herokuapp.com/check_token');
     
     // Incluir el token en el encabezado de la solicitud
     request.setRequestHeader("Authorization", `Bearer ${token}`);

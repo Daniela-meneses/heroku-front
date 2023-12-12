@@ -2,7 +2,7 @@ async function login() {
     const username = document.getElementById("username").value;
     const password = document.getElementById("password").value;
 
-    const backendURL = "https://contactos-backend-2x51.onrender.com"; // Reemplaza con la URL de tu backend
+    const backendURL = "https://token-back-d1881038bacf.herokuapp.com/"; // Reemplaza con la URL de tu backend
 
     try {
         const response = await fetch(`${backendURL}/token`, {
