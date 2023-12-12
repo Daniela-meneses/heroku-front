@@ -1,33 +1,80 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Borrar Contacto</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-</head>
-<body>
-    <div class="container text-center">
-        <h1 class="my-4">Borrar Contacto</h1>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Contactos</title>
+        <script type="text/javascript" src="../static/js/delete.js"></script>
+    </head>
 
-        <div id="detalle-contacto" class="text-center">
-            <p><strong>Email:</strong> <span id="email"></span></p>
-            <p><strong>Nombre:</strong> <span id="nombre"></span></p>
-            <p><strong>Teléfono:</strong> <span id="telefono"></span></p>
-        </div>
+    <body>
+        <center>
+            <h1>Contacto</h1>
+            <hr size="10" color="black">
+            <div id="detalle"></div>
+            <button type="button" onclick="deleteContact()">Borrar</button>
+            <a href="/">Cancelar</a>
+        </center>
+    </body>
+    <script>
+        async function deleteContact() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const email = urlParams.get('email');
 
-        <form id="delete-contact-form">
-            <button type="button" class="btn btn-danger" onclick="borrarContacto()">Borrar</button>
-            <button type="button" class="btn btn-secondary" onclick="cancelarBorrar()">Cancelar</button>
-        </form>
+            verificar = await checarStatus();
 
-        <div id="error-mensaje"></div>
-    </div>
+            if (verificar.status === 200){
+                deleteData(email);
 
-    <!-- Agrega el script al final para garantizar que se cargue después de la página -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script src="../static/js/borrar.js"></script>
-</body>
+            } else if(verificar.status === 401){
+                window.location.href == "/sesion";
+                return alert("Token invalido");
+            } else {
+                return alert("Ocurrio un error");
+            }
+        }
+
+        function checarStatus(){
+            return fetch('https://herokubackendsql-03fb6209ab45.herokuapp.com/', {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${sessionStorage.getItem('token')}`
+                }
+            });
+        }
+
+
+        function handleServerError(error) {
+            console.error('Error en la solicitud:', error.message || error.statusText);
+            //document.getElementById('statusMessage').innerText = 'Error al procesar la solicitud';
+        }
+
+        async function checkServerStatus() {
+            try {
+                const response = await fetch('https://herokubackendsql-03fb6209ab45.herokuapp.com/', {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': 'Bearer ' + sessionStorage.getItem('token')
+                    }
+                });
+                if (response.status === 401){
+                    window.location.href = "/sesion";
+                }
+
+                if (response.ok) {
+                    const data = await response.json();
+                    //document.getElementById('statusMessage').innerText = `Server response: ${data.message}`;
+                } else {
+                    const errorData = await response.json();
+                    console.error('Error checking server status:', errorData);
+                    //document.getElementById('statusMessage').innerText = `Error: ${errorData.message}`;
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                //document.getElementById('statusMessage').innerText = 'Error checking server status';
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', checkServerStatus);
+    </script>
 </html>

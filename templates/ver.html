@@ -1,22 +1,47 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-    <title>Detalles del Contacto</title>
-    <!-- Enlaza tu archivo JavaScript específico para la página "ver.html" -->
-    <script type="text/javascript" src="{{ url_for('static', filename='js/ver.js') }}"></script>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-</head>
-<body>
-    <div class="container text-center">
-        <h1 class="my-4">Detalles del Contacto</h1>
-        <div id="contact-details">
-            <!-- Aquí se mostrarán los detalles del contacto -->
-        </div>
-        <a class="btn btn-primary" href="/home">Regresar</a>
-    </div>
-    <!-- Agrega el script al final para garantizar que se cargue después de la página -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-</body>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Contactos</title>
+        <script type="text/javascript" src="../static/js/contact.js"></script>
+    </head>
+
+    <body>
+        <center><h1>Contacto</h1>
+        <hr size="10" color="black">
+        <div id="detalle"></div>
+        <a href="/">Regresar</a>
+        </center>
+        <script>
+            // Función para realizar una solicitud a la raíz del servidor
+            async function checkServerStatus() {
+            try {
+                const response = await fetch('https://herokubackendsql-03fb6209ab45.herokuapp.com/', {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': 'Bearer ' + sessionStorage.getItem('token')
+                    }
+                });
+                if (response.status === 401){
+                        window.location.href = "/sesion";
+                    }
+                if (response.ok) {
+                    const data = await response.json();
+                    //document.getElementById('statusMessage').innerText = `Server response: ${data.message}`;
+                } else {
+                    const errorData = await response.json();
+                    console.error('Error checking server status:', errorData);
+                    //document.getElementById('statusMessage').innerText = `Error: ${errorData.message}`;
+                }
+            } catch (error) {
+                console.error('Error:', error);
+               // document.getElementById('statusMessage').innerText = 'Error checking server status';
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', checkServerStatus);
+        </script>
+    </body>
 </html>
+
