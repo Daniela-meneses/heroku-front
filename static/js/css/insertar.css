@@ -1,92 +1,39 @@
-/* Estilos para la tabla */
-.table-container {
-  width: 80%;
-  text-align: center; /* Centra horizontalmente el contenido de la tabla */
-  margin-top: 3%; /* Centra la tabla verticalmente en la mitad de la página */
-  margin-left: auto;
-  margin-right: auto;
+/* Estilos para centrar el contenido */
+.center-content {
+  text-align: center;
   display: flex;
   flex-direction: column;
+  align-items: center;
   justify-content: center;
+  height: 100vh; /* Esto centrará verticalmente en la página */
 }
 
-.datagrid {
-  font-size: 16px;
-  border-collapse: collapse;
-  width: 100%;
-}
-
-/* Estilo para las cabeceras de la tabla */
-.datagrid th {
-  background-color: #8A2BE2; /* Morado para las cabeceras */
-  color: #FFFFFF;
-  width: 33.33%; /* Establece el ancho igual para cada columna */
-}
-
-/* Estilos para las celdas pares de la tabla */
-.datagrid tr:nth-child(even) {
-  background-color: #D8BFD8; /* Morado más claro para las celdas pares */
-}
-
-/* Estilos para las celdas impares de la tabla */
-.datagrid tr:nth-child(odd) {
-  background-color: #E6E6FA; /* Morado claro para las celdas impares */
-}
-
-/* Estilos para las celdas de datos */
-.datagrid td {
-  width: 33.33%; /* Establece el ancho igual para cada columna de datos */
-  padding: 10px;
-  border: 1px solid #000;
-  text-align: center;
-}
-
-/* Estilos para el botón y el contenedor (izquierda y separación) */
+/* Estilos para el botón y el input */
 .button-container {
   display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  margin-top: 10px;
+  justify-content: center;
 }
 
 .button {
   display: inline-block;
-  padding: 20px 40px; /* Aumenta el tamaño de los botones */
-  background: #8A2BE2; /* Morado para el botón */
+  padding: 10px 20px;
+  background: #8A2BE2; /* Cambio a un tono morado (usando código hexadecimal) */
   color: #FFFFFF;
-  border: 1px solid #8A2BE2; /* Borde morado para el botón */
+  border: 1px solid #8A2BE2; /* Cambio a un tono morado (usando código hexadecimal) */
   border-radius: 3px;
   text-decoration: none;
   cursor: pointer;
   transition: background 0.3s, color 0.3s;
-  margin-right: 10px;
+  margin:0 10px; /* Ajusta el espacio entre el botón y otros elementos */
 }
 
 .button:hover {
-  background: #7B1FA2; /* Morado más oscuro al pasar el cursor sobre el botón */
+  background: #7B1FA2; /* Cambio a un tono morado más oscuro (usando código hexadecimal) */
 }
 
-.button1 {
-  display: inline-block;
-  padding: 20px 40px; /* Aumenta el tamaño de los botones */
-  background: #8A2BE2; /* Morado para el segundo botón */
-  color: #FFFFFF;
-  border: 1px solid #8A2BE2; /* Borde morado para el segundo botón */
-  border-radius: 3px;
-  text-decoration: none;
-  cursor: pointer;
-  transition: background 0.3s, color 0.3s;
-  margin-right: 10px;
-  margin-top: 7%;
-}
-
-.button1:hover {
-  background: #7B1FA2; /* Morado más oscuro al pasar el cursor sobre el segundo botón */
-}
-
-.search-input {
+.input {
   padding: 10px;
-  border: 1px solid #8A2BE2; /* Borde morado para el input */
+  border: 1px solid #8A2BE2; /* Cambio a un tono morado (usando código hexadecimal) */
   border-radius: 3px;
-  margin-right: 10px;
+  margin: 10px 0; /* Ajusta el espacio entre el input y otros elementos */
 }
