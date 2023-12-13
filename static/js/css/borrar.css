@@ -19,19 +19,19 @@
 
 /* Estilo para las cabeceras de la tabla */
 .datagrid th {
-  background-color: #006699;
+  background-color: #8A2BE2; /* Morado para las cabeceras */
   color: #FFFFFF;
   width: 33.33%; /* Establece el ancho igual para cada columna */
 }
 
 /* Estilos para las celdas pares de la tabla */
 .datagrid tr:nth-child(even) {
-  background-color: #f2f2f2;
+  background-color: #D8BFD8; /* Morado más claro para las celdas pares */
 }
 
 /* Estilos para las celdas impares de la tabla */
 .datagrid tr:nth-child(odd) {
-  background-color: #ffffff;
+  background-color: #E6E6FA; /* Morado claro para las celdas impares */
 }
 
 /* Estilos para las celdas de datos */
@@ -41,19 +41,19 @@
   border: 1px solid #000;
   text-align: center;
 }
-  
+
 /* Estilos para el botón y el input */
 .button-container {
-    display: flex;
-    justify-content: center;
+  display: flex;
+  justify-content: center;
 }
 
 .button {
   display: inline-block;
   padding: 20px 40px; /* Ajusta el padding para ambos botones */
-  background: #006699;
+  background: #8A2BE2; /* Morado para el botón */
   color: #FFFFFF;
-  border: 1px solid #006699;
+  border: 1px solid #8A2BE2; /* Borde morado para el botón */
   border-radius: 3px;
   text-decoration: none;
   cursor: pointer;
@@ -63,8 +63,6 @@
   font-size: 20px; /* Ajusta el tamaño del texto para ambos botones */
 }
 
-
 .button:hover {
-    background: #00557F;
+  background: #7B1FA2; /* Morado más oscuro al pasar el cursor sobre el botón */
 }
-  
