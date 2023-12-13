@@ -5,43 +5,44 @@ app = Flask(__name__)
 
 @app.route("/")
 def index():
-    return render_template('index.html')
+    message = "Hello, World"
+    return render_template('index.html', message=message)
 
-@app.route("/buscar", methods=["GET", "POST"])
+@app.route("/login")
+def login():
+    return render_template('login.html')
+
+@app.route("/registro")
+def registro():
+    return render_template('registro.html')  
+
+@app.route("/inicio")
+def inicio():
+    return render_template('inicio.html')
+
+@app.route("/buscar")
 def buscar():
     return render_template('buscar.html')
 
+@app.route("/prueba")
+def prueba():
+    return render_template('prueba.html')
 
-@app.route("/insertar", methods=["GET", "POST"])
-def insertar():
-    return render_template('insertar.html')
-
-@app.route("/eliminar", methods=["GET", "POST"])
-def eliminar():
-    return render_template('borrar.html')
-
-@app.route("/ver", methods=["GET", "POST"])
+@app.route("/ver")
 def ver():
     return render_template('ver.html')
 
+@app.route("/insertar")
+def insertar():
+    return render_template('insertar.html')
 
-@app.route("/editar", methods=["GET", "POST"])
-def editar():
-    return render_template('editar.html')
+@app.route("/actualizar")
+def actualizar():
+    return render_template('actualizar.html')
 
-@app.route("/prueba", methods=["GET", "POST"])
-def prueba():
-    """Pagina para probar DOM"""
-    return render_template('prueba.html')
+@app.route("/borrar")
+def borrar():
+    return render_template('borrar.html')
 
-@app.route("/sesion", methods = ["GET", "POST"])
-def sesion():
-    return render_template("sesion.html")
-
-@app.route("/nuevo", methods=["GET", "POST"])
-def cuenta():
-    return render_template("nuevo_usuario.html")
-
-
-#if __name__ == '__name__':
-#    app.run()
+if __name__ == "__main__":
+    app.run(debug=True)

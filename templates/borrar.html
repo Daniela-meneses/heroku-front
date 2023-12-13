@@ -1,80 +1,57 @@
 <!DOCTYPE html>
 <html lang="es">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Contactos</title>
-        <script type="text/javascript" src="../static/js/delete.js"></script>
-    </head>
+<head>
+    <title>Borrar Contacto</title>
+    <link rel="stylesheet" href="../static/js/css/borrar.css">
+    <script type="text/javascript" src="../static/js/delete.js"></script>
+</head>
 
-    <body>
-        <center>
-            <h1>Contacto</h1>
-            <hr size="10" color="black">
-            <div id="detalle"></div>
-            <button type="button" onclick="deleteContact()">Borrar</button>
-            <a href="/">Cancelar</a>
-        </center>
-    </body>
+<body>
+    <div class="table-container">
+        <table id="table_contactos" class="datagrid">
+            <thead id="thead_contactos">
+                <th>Email</th>
+                <th>Nombre</th>
+                <th>Teléfono</th>
+            </thead>
+            <tbody id="tbody_contactos">
+            </tbody>
+        </table>
+        <div>
+            <button onclick="deleteContact()" class="button">Borrar</button>
+            <button onclick="cancelar()" class="button">Cancelar</button>
+        </div>
+    </div>
+    <div id="statusMessage"></div>
     <script>
+        function cancelar() {    
+            window.location.href = "/inicio";
+        }
+
         async function deleteContact() {
             const urlParams = new URLSearchParams(window.location.search);
             const email = urlParams.get('email');
 
             verificar = await checarStatus();
 
-            if (verificar.status === 200){
+            if (verificar.status === 200) {
                 deleteData(email);
-
-            } else if(verificar.status === 401){
-                window.location.href == "/sesion";
-                return alert("Token invalido");
+            } else if (verificar.status === 401) {
+                window.location.href = "/login";
+                return alert("Token inválido");
             } else {
-                return alert("Ocurrio un error");
+                return alert("Ocurrió un error");
             }
         }
 
-        function checarStatus(){
-            return fetch('https://herokubackendsql-03fb6209ab45.herokuapp.com/', {
+        function checarStatus() {
+            return fetch('http://127.0.0.1:8000/', {
                 method: 'GET',
                 headers: {
                     'Authorization': `Bearer ${sessionStorage.getItem('token')}`
                 }
             });
         }
-
-
-        function handleServerError(error) {
-            console.error('Error en la solicitud:', error.message || error.statusText);
-            //document.getElementById('statusMessage').innerText = 'Error al procesar la solicitud';
-        }
-
-        async function checkServerStatus() {
-            try {
-                const response = await fetch('https://herokubackendsql-03fb6209ab45.herokuapp.com/', {
-                    method: 'GET',
-                    headers: {
-                        'Authorization': 'Bearer ' + sessionStorage.getItem('token')
-                    }
-                });
-                if (response.status === 401){
-                    window.location.href = "/sesion";
-                }
-
-                if (response.ok) {
-                    const data = await response.json();
-                    //document.getElementById('statusMessage').innerText = `Server response: ${data.message}`;
-                } else {
-                    const errorData = await response.json();
-                    console.error('Error checking server status:', errorData);
-                    //document.getElementById('statusMessage').innerText = `Error: ${errorData.message}`;
-                }
-            } catch (error) {
-                console.error('Error:', error);
-                //document.getElementById('statusMessage').innerText = 'Error checking server status';
-            }
-        }
-
-        document.addEventListener('DOMContentLoaded', checkServerStatus);
     </script>
+</body>
 </html>

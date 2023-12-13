@@ -1,14 +1,11 @@
-// Obtén el parámetro 'id' de la URL
-const SERVER_URL = "https://herokubackendsql-03fb6209ab45.herokuapp.com";
+const SERVER_URL = "http://127.0.0.1:8000";
 
-
-// Obtén el parámetro 'id' de la URL
 const urlParams = new URLSearchParams(window.location.search);
 const email = urlParams.get('email');
 
 checarStatus();
 
-async function checarStatus(){
+async function checarStatus() {
     respuestaServidor = await fetch(`${SERVER_URL}`, {
         method: 'GET',
         headers: {
@@ -16,40 +13,32 @@ async function checarStatus(){
         }
     });
 
-
-    try{
-
-        if (respuestaServidor.status === 200){
-            // Llama a la función para obtener y mostrar el registro
+    try {
+        if (respuestaServidor.status === 200) {
             getContactById(email);
-
-
-        } else if (respuestaServidor.status === 401){
-            window.location.href = "/sesion";
-            return alert("Token invalido");
+        } else if (respuestaServidor.status === 401) {
+            window.location.href = "/login";
+            return alert("Token inválido");
         } else {
             manejarRespuestaError(respuestaServidorStatus.status, respuestaServidorStatus.statusText);
         }
     } catch (error) {
         console.error("Error", error);
-        //document.getElementById("statusMessage").innerHTML = "Error checando el estado del servidor";
+        document.getElementById("statusMessage").innerHTML = "Error checando el estado del servidor";
     }
 }
 
-// Función para obtener un solo registro por su ID
 function getContactById(email) {
-    // Realiza una solicitud para obtener el registro por su ID, por ejemplo:
     const token = sessionStorage.getItem('token');
 
     if (!token) {
         console.error('Token not found. Redirecting to login page.');
-        window.location.href = '/sesion';  // Ajusta la URL según tu estructura de rutas
+        window.location.href = '/login';
         return;
     }
 
     const request = new XMLHttpRequest();
-    request.open('GET', "https://herokubackendsql-03fb6209ab45.herokuapp.com/contactos/" + email);
-    //request.open('GET', "https://herokubackendsql-03fb6209ab45.herokuapp.com/contactos/" + email);
+    request.open('GET', "http://127.0.0.1:8000/contactos/" + email);
     request.setRequestHeader('Authorization', `Bearer ${token}`);
     request.send();
 
@@ -59,13 +48,21 @@ function getContactById(email) {
             const contacto = JSON.parse(response);
             console.log(contacto);
 
-            // Ahora puedes mostrar los datos del registro en la página "ver.html"
-            const detalle = document.getElementById("detalle");
-            detalle.innerHTML = `
-                <p>Email: ${contacto.email}</p>
-                <p>Nombre: ${contacto.nombre}</p>
-                <p>Teléfono: ${contacto.telefono}</p>
-            `;
+            const tbody_contactos = document.getElementById("tbody_contactos");
+            var tr = document.createElement("tr");
+            var td_email = document.createElement("td");
+            var td_nombre = document.createElement("td");
+            var td_telefono = document.createElement("td");
+
+            td_email.innerHTML = contacto["email"];
+            td_nombre.innerHTML = contacto["nombre"];
+            td_telefono.innerHTML = contacto["telefono"];
+
+            tr.appendChild(td_email);
+            tr.appendChild(td_nombre);
+            tr.appendChild(td_telefono);
+
+            tbody_contactos.appendChild(tr);
         } else {
             handleErrorResponse(request.status, request.statusText);
         }
@@ -77,20 +74,18 @@ function deleteData(email) {
 
     if (!token) {
         console.error('Token not found. Redirecting to login page.');
-        window.location.href = '/sesion';  // Ajusta la URL según tu estructura de rutas
+        window.location.href = '/login';
         return;
     }
 
     const request = new XMLHttpRequest();
-    request.open('DELETE', "https://herokubackendsql-03fb6209ab45.herokuapp.com/contactos/" + email, true);
-    //request.open('DELETE', "https://herokubackendsql-03fb6209ab45.herokuapp.com/contactos/" + email, true);
+    request.open('DELETE', "http://127.0.0.1:8000/contactos/" + email, true);
     request.setRequestHeader('Authorization', `Bearer ${token}`);
 
     request.onload = function () {
         if (request.readyState === 4) {
             if (request.status === 200) {
                 alert("Borrado con éxito");
-                // Redirigir a la página principal (index.html)
                 window.location.href = '/';
             } else {
                 alert("Ocurrió un error");

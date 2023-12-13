@@ -1,72 +1,76 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contactos</title>
-    <script type="text/javascript" src="../static/js/get_one.js"></script>
+    <title>Buscar contacto</title>
+    <link rel="stylesheet" href="../static/js/css/buscar.css">
+    <script type="text/javascript" src="../static/js/get.js"></script>
 </head>
-
 <body>
-    <center>
-        <h1><b>Buscar Contacto</b></h1>
-        <form id="search-form">
-            <label for="email">Email:</label>
-            <input type="text" id="email" name="email">
-            <button type="button" onclick=" searchContact()">Buscar</button>
-        </form>
-        <hr size="10" color="black">
-        <br>
-        <table border="1" id="table_contactos">
-            <thead id="thead_contactos">
-                <th>Email</th>
-                <th>Nombre</th>
-                <th>Teléfono</th>
+    <h1>Buscar contacto</h1>
+
+    <input type="text" id="emailInput" class="search-input" placeholder="Ingrese el correo electrónico">
+    <button onclick="searchContact()" class="button">Buscar</button>
+    <div class="table-container">
+        <h2>Resultados</h2>
+        <table class="datagrid">
+            <thead>
+                <tr>
+                    <th>Email</th>
+                    <th>Nombre</th>
+                    <th>Teléfono</th>
+                </tr>
             </thead>
             <tbody id="tbody_contactos">
-                <tr>
-                    <td colspan="3">Escribe un correo electrónico y haz clic en "Buscar" para encontrar un contacto.</td>
-                </tr>
+                <!-- Aquí se mostrarán los resultados de la búsqueda -->
             </tbody>
         </table>
-        <br>
-        <a href="/">Regresar</a>
-    </center>
+    </div>
+    <button onclick="cancelar()" class="button1">Volver</button>
+
+    <div id="detalle"></div>
+
     <script>
+        function cancelar() {
+            window.location.href = "/inicio";
+        }
+
         async function searchContact() {
-            var emailInput = document.getElementById("email");
+            var emailInput = document.getElementById("emailInput");
             var email = emailInput.value;
-            await getForEmail(email);
+            await getContactById(email);
             // Limpiar el campo de entrada después de obtener el valor
             emailInput.value = "";
         }
 
         async function checkServerStatus() {
             try {
-                const response = await fetch('https://herokubackendsql-03fb6209ab45.herokuapp.com/', {
+                const response = await fetch('http://127.0.0.1:8000', {
                     method: 'GET',
                     headers: {
                         'Authorization': 'Bearer ' + sessionStorage.getItem('token')
                     }
                 });
                 if (response.status === 401){
-                    window.location.href = "/sesion";
+                    window.location.href = "/login";
                 }
                 if (response.ok) {
                     const data = await response.json();
-                    //document.getElementById('statusMessage').innerText = `Server response: ${data.message}`;
+                    document.getElementById('statusMessage').innerText = `Server response: ${data.message}`;
                 } else {
                     const errorData = await response.json();
                     console.error('Error checking server status:', errorData);
-                    //document.getElementById('statusMessage').innerText = `Error: ${errorData.message}`;
+                    document.getElementById('statusMessage').innerText = `Error: ${errorData.message}`;
                 }
             } catch (error) {
                 console.error('Error:', error);
-                //document.getElementById('statusMessage').innerText = 'Error checking server status';
+                document.getElementById('statusMessage').innerText = 'Error checking server status';
             }
         }
 
-        document.addEventListener('DOMContentLoaded', checkServerStatus);
+        document.addEventListener('DOMContentLoaded', function () {
+        checkServerStatus();
+        });
+
     </script>
 </body>
 </html>

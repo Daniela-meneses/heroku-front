@@ -1,47 +1,35 @@
 <!DOCTYPE html>
 <html lang="es">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Contactos</title>
-        <script type="text/javascript" src="../static/js/contact.js"></script>
-    </head>
 
-    <body>
-        <center><h1>Contacto</h1>
-        <hr size="10" color="black">
-        <div id="detalle"></div>
-        <a href="/">Regresar</a>
-        </center>
-        <script>
-            // Función para realizar una solicitud a la raíz del servidor
-            async function checkServerStatus() {
-            try {
-                const response = await fetch('https://herokubackendsql-03fb6209ab45.herokuapp.com/', {
-                    method: 'GET',
-                    headers: {
-                        'Authorization': 'Bearer ' + sessionStorage.getItem('token')
-                    }
-                });
-                if (response.status === 401){
-                        window.location.href = "/sesion";
-                    }
-                if (response.ok) {
-                    const data = await response.json();
-                    //document.getElementById('statusMessage').innerText = `Server response: ${data.message}`;
-                } else {
-                    const errorData = await response.json();
-                    console.error('Error checking server status:', errorData);
-                    //document.getElementById('statusMessage').innerText = `Error: ${errorData.message}`;
-                }
-            } catch (error) {
-                console.error('Error:', error);
-               // document.getElementById('statusMessage').innerText = 'Error checking server status';
-            }
+<head>
+    <title>Ver Contacto</title>
+    <link rel="stylesheet" href="../static/js/css/ver.css">
+    <script type="text/javascript" src="../static/js/ver.js"></script>
+</head>
+
+<body>
+    <h1>Ver Contacto</h1>
+    <div class="center-content">
+        <div class="table-container">
+            <table border="1" id="table_contactos" class="datagrid">
+                <thead id="thead_contactos">
+                    <th>Email</th>
+                    <th>Nombre</th>
+                    <th>Teléfono</th>
+                </thead>
+                <tbody id="tbody_contactos">
+                </tbody>
+            </table>
+        </div>
+        <button onclick="cancelar()" class="button">Volver</button>
+    </div>
+    <script>
+        document.body.onload = getContacto();
+
+        function cancelar() {
+            window.location.href = "/inicio";
         }
+    </script>
+</body>
 
-        document.addEventListener('DOMContentLoaded', checkServerStatus);
-        </script>
-    </body>
 </html>
-

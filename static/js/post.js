@@ -1,5 +1,5 @@
-const SERVER_URL = "https://herokubackendsql-03fb6209ab45.herokuapp.com";
-const ENDPOINT = "/contactos"
+const SERVER_URL = "http://127.0.0.1:8000";
+const ENDPOINT = "/contactos/"
 
 async function insertData(email, nombre, telefono) {
     const token = sessionStorage.getItem('token');
@@ -11,7 +11,7 @@ async function insertData(email, nombre, telefono) {
 
     if (!token) {
         console.error('Token not found. Redirecting to login page.');
-        window.location.href = '/sesion';
+        window.location.href = '/login';
         return;
     }
 
@@ -25,21 +25,21 @@ async function insertData(email, nombre, telefono) {
             console.log(respuestaContactos.status);
 
             if (respuestaContactos.status === 200){
-                window.location.href = "/";
+                window.location.href = "/inicio";
                 return alert("Contacto ingresado correctamente");
             } else {
                 manejarRespuestaError(respuestaContactos.status, respuestaContactos.statusText);
             }
 
         } else if (respuestaServidorStatus.status === 401){
-            window.location.href = "/sesion";
+            window.location.href = "/login";
             return alert("Token Invalido");
         } else {
             manejarRespuestaError(respuestaServidorStatus.status, respuestaServidorStatus.statusText)
         }
     } catch(error) {
         console.error("Error", error);
-        //document.getElementById("statusMessage").innerHTML = "Error checando el estado del servidor";
+        document.getElementById("statusMessage").innerHTML = "Error checando el estado del servidor";
     }
 
 

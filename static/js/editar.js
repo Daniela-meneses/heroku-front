@@ -1,53 +1,47 @@
-const SERVER_URL = "https://herokubackendsql-03fb6209ab45.herokuapp.com";
-const CONTACTS_ENDPOINT = "/actualizar_contactos"
+const SERVER_URL = "http://127.0.0.1:8000";
+const CONTACTS_ENDPOINT = "/contactos";
 
-
+// Obtener el parámetro de la URL
 const urlParams = new URLSearchParams(window.location.search);
 const email = urlParams.get('email');
 
 checarStatus();
 
-async function checarStatus(){
-    respuestaServidor = await fetch(`${SERVER_URL}`, {
+async function checarStatus() {
+    const respuestaServidor = await fetch(`${SERVER_URL}`, {
         method: 'GET',
         headers: {
             'Authorization': `Bearer ${sessionStorage.getItem('token')}`
         }
     });
 
-
-    try{
-
-        if (respuestaServidor.status === 200){
+    try {
+        if (respuestaServidor.status === 200) {
             // Llama a la función para obtener y mostrar el registro
             getContactById(email);
-
-        } else if (respuestaServidor.status === 401){
-            window.location.href = "/sesion";
-            return alert("Token invalido");
+        } else if (respuestaServidor.status === 401) {
+            window.location.href = "/login";
+            return alert("Token inválido");
         } else {
-            manejarRespuestaError(respuestaServidorStatus.status, respuestaServidorStatus.statusText);
+            manejarRespuestaError(respuestaServidor.status, respuestaServidor.statusText);
         }
     } catch (error) {
         console.error("Error", error);
-        //document.getElementById("statusMessage").innerHTML = "Error checando el estado del servidor";
+        document.getElementById("statusMessage").innerHTML = "Error checando el estado del servidor";
     }
 }
 
-
 function getContactById(email) {
-    console.log(email);
     const token = sessionStorage.getItem('token');
 
     if (!token) {
         console.error('Token not found. Redirecting to login page.');
-        window.location.href = '/sesion';
+        window.location.href = '/login';
         return;
     }
 
-    console.log(email);    
     const request = new XMLHttpRequest();
-    request.open('GET', "https://herokubackendsql-03fb6209ab45.herokuapp.com/contactos/" + email);
+    request.open('GET', `${SERVER_URL}${CONTACTS_ENDPOINT}/${email}`);
     request.setRequestHeader('Authorization', `Bearer ${token}`);
     request.onload = (e) => {
         if (request.status === 200) {
@@ -74,14 +68,12 @@ function getContactById(email) {
     request.send();
 }
 
-
-
 function updateData(email, nombre, telefono) {
     const token = sessionStorage.getItem('token');
 
     if (!token) {
         console.error('Token not found. Redirecting to login page.');
-        window.location.href = '/sesion';
+        window.location.href = '/login';
         return;
     }
 
@@ -101,7 +93,7 @@ function updateData(email, nombre, telefono) {
         if (request.readyState === 4) {
             if (request.status === 200) {
                 alert(request.responseText);
-                window.location.href = '/';
+                window.location.href = '/inicio';
             } else {
                 manejarRespuestaError(request.status, request.statusText);
             }
@@ -111,8 +103,6 @@ function updateData(email, nombre, telefono) {
     request.send(JSON.stringify(data));
 }
 
-
-function manejarRespuestaError(status, statusText){
+function manejarRespuestaError(status, statusText) {
     console.error(`Error: ${status} - ${statusText}`);
-
 }

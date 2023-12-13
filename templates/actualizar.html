@@ -1,13 +1,15 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <title>Insertar contacto</title>
-    <link rel="stylesheet" href="../static/js/css/insertar.css">
-    <script type="text/javascript" src="../static/js/post.js"></script>
+    <title>Actualizar Contacto</title>
+    <link rel="stylesheet" href="../static/js/css/actualizar.css">
+    <script type="text/javascript" src="../static/js/editar.js"></script>
 </head>
+
 <body>
     <div class="center-content">
-        <h1>Insertar Contacto</h1>
+        <h1>Actualizar Contacto</h1>
+
         <label for="text">Nombre</label>
         <input type="text" id="nombreInput" class="input" placeholder="Ingrese el Nombre">
         <label for="text">Correo</label>
@@ -15,30 +17,52 @@
         <label for="text">Teléfono</label>
         <input type="tel" id="telefonoInput" class="input" placeholder="Ingrese el Teléfono">
         <div class="button-container">
-            <button onclick="insertContact()" class="button">Ingresar</button>
+            <button onclick="putContacto()" class="button">Actualizar</button>
             <button onclick="cancelar()" class="button">Cancelar</button>
         </div>
     </div>
-
     <script>
-        function cancelar() {
+        function cancelar() {    
             window.location.href = "/inicio";
         }
-
-        async function insertContact() {
-            var emailInput = document.getElementById("emailInput");
+        document.body.onload = cargarContacto();
+        async function putContacto() {
             var nombreInput = document.getElementById("nombreInput");
             var telefonoInput = document.getElementById("telefonoInput");
+            var emailInput = document.getElementById("emailInput");
             var email = emailInput.value;
-            var nombre = nombreInput.value;
             var telefono = telefonoInput.value;
+            var nombre = nombreInput.value;
 
-            await insertData(email, nombre, telefono);
+            verificar = await checarStatus();
+
+            if (verificar.status === 200) {
+                updateData(email, nombre, telefono);
+            } else if (verificar.status === 401) {
+                window.location.href = "/login";
+                return alert("Token inválido");
+            } else {
+                return alert("Ocurrió un error");
+            }
+        }
+
+        function checarStatus() {
+            return fetch('http://127.0.0.1:8000/', {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${sessionStorage.getItem('token')}`
+                }
+            });
+        }
+
+        function handleServerError(error) {
+            console.error('Error en la solicitud:', error.message || error.statusText);
+            document.getElementById('statusMessage').innerText = 'Error al procesar la solicitud';
         }
 
         async function checkServerStatus() {
             try {
-                const response = await fetch('http://127.0.0.1:8000/', {
+                const response = await fetch('http://127.0.0.1/', {
                     method: 'GET',
                     headers: {
                         'Authorization': 'Bearer ' + sessionStorage.getItem('token')
@@ -47,6 +71,7 @@
                 if (response.status === 401) {
                     window.location.href = "/login";
                 }
+
                 if (response.ok) {
                     const data = await response.json();
                     document.getElementById('statusMessage').innerText = `Server response: ${data.message}`;
