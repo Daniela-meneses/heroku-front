@@ -86,7 +86,7 @@ function deleteData(email) {
         if (request.readyState === 4) {
             if (request.status === 200) {
                 alert("Borrado con éxito");
-                window.location.href = '/';
+                window.location.href = '/inicio';
             } else {
                 alert("Ocurrió un error");
             }
