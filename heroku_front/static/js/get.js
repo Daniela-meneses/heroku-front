@@ -1,4 +1,4 @@
-const SERVER_URL = "http://127.0.0.1:8000";
+const SERVER_URL = "https://back-heroku-cb17d0009ad0.herokuapp.com/";
 
 function handleErrorResponse(status, statusText) {
     console.error(`Error: ${status} - ${statusText}`);

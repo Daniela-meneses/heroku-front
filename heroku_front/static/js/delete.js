@@ -1,4 +1,4 @@
-const SERVER_URL = "http://127.0.0.1:8000";
+const SERVER_URL = "https://back-heroku-cb17d0009ad0.herokuapp.com/";
 
 const urlParams = new URLSearchParams(window.location.search);
 const email = urlParams.get('email');
@@ -38,7 +38,7 @@ function getContactById(email) {
     }
 
     const request = new XMLHttpRequest();
-    request.open('GET', "http://127.0.0.1:8000/contactos/" + email);
+    request.open('GET', "https://back-heroku-cb17d0009ad0.herokuapp.com/contactos/" + email);
     request.setRequestHeader('Authorization', `Bearer ${token}`);
     request.send();
 
@@ -79,7 +79,7 @@ function deleteData(email) {
     }
 
     const request = new XMLHttpRequest();
-    request.open('DELETE', "http://127.0.0.1:8000/contactos/" + email, true);
+    request.open('DELETE', "https://back-heroku-cb17d0009ad0.herokuapp.com/contactos/" + email, true);
     request.setRequestHeader('Authorization', `Bearer ${token}`);
 
     request.onload = function () {

@@ -1,6 +1,6 @@
 async function checkServerStatus() {
     try {
-        const response = await fetch('http://127.0.0.1:8000', {
+        const response = await fetch('https://back-heroku-cb17d0009ad0.herokuapp.com', {
             method: 'GET',
             headers: {
                 'Authorization': 'Bearer ' + sessionStorage.getItem('token')
@@ -37,7 +37,7 @@ async function getContacto() {
     const email = params.get('email');
 
     var request = new XMLHttpRequest();
-    request.open('GET', "http://127.0.0.1:8000/contactos/" + encodeURIComponent(email));
+    request.open('GET', "https://back-heroku-cb17d0009ad0.herokuapp.com/contactos/" + encodeURIComponent(email));
     // request.open('GET', "https://backendapi-b8813c2df8d9.herokuapp.com/contactos/" + encodeURIComponent(email));
     request.setRequestHeader('Authorization', `Bearer ${token}`);
     request.send();
